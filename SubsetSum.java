@@ -4,57 +4,59 @@ public class SubsetSum {
 	
 	public static void main(String[] args) {		
 		Scanner sc = new Scanner(System.in);
-		int testCases = sc.nextInt();
 		
-		for(int test=0; test < testCases; test++) {
-			System.out.printf("Caso %d:", test+1);			
-			List<Integer> list = new ArrayList<Integer>();
-			int nElements = sc.nextInt();				
-			int nQuestions = sc.nextInt();
-			
-			for(int element=0; element < nElements; element++) { // Create list with given elements
-				list.add(sc.nextInt());
-			}			
-			
-			for(int quest=0; quest < nQuestions; quest++) {
-				int index = sc.nextInt() - 1;
-				int element = sc.nextInt();
-				if(possibleSum(index, element, list)) {
-					System.out.print(" 1"); 					
-				}
-				else {
-					System.out.print(" 0");
-					
-				}			
+		System.out.print("Enter the number of elements of the vector: ");
+		int vectLength = sc.nextInt();	
+		int[] vect = new int[vectLength];
+		for(int i=0; i<vectLength; i++) {
+			vect[i] = i+1;
+		}
+		String newQuery;
+		System.out.printf("Vector created ([1, ..., %d]\n", vectLength);	
+		
+		do {
+			System.out.print("Enter the limit index of the query: ");
+			int limitIndex = sc.nextInt();
+			System.out.printf("The query will be done on subvect [1, ..., %d]\n", limitIndex+1);
+			System.out.print("Enter the target sum: ");
+			int target = sc.nextInt();
+			String result = possibleSum(limitIndex, target, vect);
+			if( result != null) {
+				System.out.printf("It is possible to sum %d with %s", target, result); 					
+			}
+			else {
+				System.out.printf("It is not possible to sum %d", target); 				
 			}	
-			System.out.println();
-			
-		}		
+			sc.hasNextLine();
+			System.out.println("New query (s/n)? ");
+			newQuery = sc.nextLine();
+		} while(newQuery.toLowerCase() != "n");
+		
 		sc.close();		
 	}
 	
-	public static boolean possibleSum(int index, int element, List<Integer> list) {		
-		Map<Integer, Boolean> sums = new HashMap<>(); // HashMap that will contain possible sums of subsets of the list
-		sums.put(0, true);
-		sums.put(list.get(0), true);
-		if(sums.containsKey(element)) {
-			return true;
+	public static String possibleSum(int limitIndex, int target, int[] vect) {		
+		Map<Integer, String> sums = new HashMap<>(); // HashMap that will contain possible sums of subsets of the list
+		sums.put(0, "0");
+		sums.put(vect[0], "vect[0]");
+		if(sums.containsKey(target)) {
+			return sums.get(target);
 		}			
 		
-		for (int i=1; i <= index; i++) {
+		for (int i=1; i <= limitIndex; i++) {
 			List<Integer> keys = new ArrayList<Integer>(sums.keySet()); // Array with the keys of the Hashmap "sums"
-			for (Integer key: keys) {				
-				int newSum = key + list.get(i);
-				if(newSum <= element) {
-					sums.put(newSum, true);				
-					if(newSum == element) {
-						return true;
+			for (int key: keys) {				
+				int newSum = key + vect[i];
+				if(newSum <= target) {
+					sums.put(newSum, sums.get(key) + "+ " + vect[i]);				
+					if(newSum == target) {
+						return sums.get(target);
 					}
-				}
-				
-			}				
-		
+				}				
+			}			
 		}
-		return false;
+		return null;
 	}
+
 }
+
