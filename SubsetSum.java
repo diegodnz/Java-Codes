@@ -8,29 +8,33 @@ public class SubsetSum {
 		System.out.print("Enter the number of elements of the vector: ");
 		int vectLength = sc.nextInt();	
 		int[] vect = new int[vectLength];
+		System.out.println("Enter the elements of the vector: ");
 		for(int i=0; i<vectLength; i++) {
-			vect[i] = i+1;
+			vect[i] = sc.nextInt();
 		}
-		String newQuery;
-		System.out.printf("Vector created ([1, ..., %d]\n", vectLength);	
+		String newQuery;		
 		
-		do {
-			System.out.print("Enter the limit index of the query: ");
-			int limitIndex = sc.nextInt();
-			System.out.printf("The query will be done on subvect [1, ..., %d]\n", limitIndex+1);
+		do{
+			System.out.printf("Enter the limit index of the query (max %d): ", vectLength-1);
+			int limitIndex = sc.nextInt();			
 			System.out.print("Enter the target sum: ");
 			int target = sc.nextInt();
-			String result = possibleSum(limitIndex, target, vect);
-			if( result != null) {
-				System.out.printf("It is possible to sum %d with %s", target, result); 					
+			if(target == 0) {
+				System.out.println("It is possible to sum 0 choosing an empty subset of the vector");
 			}
 			else {
-				System.out.printf("It is not possible to sum %d", target); 				
-			}	
-			sc.hasNextLine();
+				String result = possibleSum(limitIndex, target, vect);
+				if( result != null) {
+					System.out.printf("It is possible to sum %d with %s\n", target, result); 
+				}
+				else {
+					System.out.printf("It is not possible to sum %d\n", target); 				
+				}	
+			}			
+			sc.nextLine();
 			System.out.println("New query (s/n)? ");
-			newQuery = sc.nextLine();
-		} while(newQuery.toLowerCase() != "n");
+			newQuery = sc.nextLine();			
+		}while(!newQuery.toLowerCase().matches("n"));
 		
 		sc.close();		
 	}
@@ -38,7 +42,7 @@ public class SubsetSum {
 	public static String possibleSum(int limitIndex, int target, int[] vect) {		
 		Map<Integer, String> sums = new HashMap<>(); // HashMap that will contain possible sums of subsets of the list
 		sums.put(0, "0");
-		sums.put(vect[0], "vect[0]");
+		sums.put(vect[0], String.format("%d", vect[0]));
 		if(sums.containsKey(target)) {
 			return sums.get(target);
 		}			
@@ -48,8 +52,10 @@ public class SubsetSum {
 			for (int key: keys) {				
 				int newSum = key + vect[i];
 				if(newSum <= target) {
-					sums.put(newSum, sums.get(key) + "+ " + vect[i]);				
-					if(newSum == target) {
+					if(!sums.containsKey(newSum)) {
+						sums.put(newSum, sums.get(key) + " + " + vect[i]);
+					}									
+					if(newSum == target) {						
 						return sums.get(target);
 					}
 				}				
