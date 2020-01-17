@@ -1,5 +1,18 @@
 import java.util.*;
 
+/*
+ * The algorithm determines if it is possible to obtain a sum equivalent to a given number in any subset of the vector limited by a given index
+ * 
+ * Example:
+ * vector = [12, 35, 3, 62, 5, 100, 76]
+ * limitIndex = 4 (then the query will only consider [12, 35, 3, 62, 5])
+ * target = 6
+ * answer: True, 2 + 4 = 6
+ * 
+ * @problem: https://www.geeksforgeeks.org/subset-sum-problem-dp-25/
+ * @author Alisson Diego D.
+ */
+
 public class SubsetSum {
 	
 	public static void main(String[] args) {		
