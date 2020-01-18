@@ -31,20 +31,20 @@ public class SortingAlgorithms {
 		if(sort.matches("mergesort")) {
 			vect = Mergesort.sort(vect, 0, vect.length-1);			
 		}else if(sort.matches("bubblesort")) {
-			Bubblesort.sort(vect);			
+			Bubblesort.sort(vect);								
+		}else if(sort.matches("heapsort")) {			
+			Heap.sort(vect);			
+		}else if(sort.matches("insertionsort")) {
+			Insertionsort.sort(vect);
 		}else if(sort.matches("quicksort")) {		
 			try {
 				Quicksort.sort(vect, 0, vect.length-1, gen);	
 			}catch(StackOverflowError error) {
 				stackOverflow = true;
-			}				
-		}else if(sort.matches("heapsort")) {			
-			Heap.sort(vect);			
-		}else if(sort.matches("insertionsort")) {
-			Insertionsort.sort(vect);
+			}
 		}
 		long end = System.nanoTime();
-		double totalTime =(double)(end-start)/1000000;
+		double totalTime =(end-start)/1000000;
 		if(stackOverflow){
 			System.out.print("(StackOverflow)");
 		}
