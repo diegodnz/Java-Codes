@@ -3,7 +3,7 @@ import java.util.*;
 public class SortingAlgorithms {	
 	public static void main(String[] args){
 		Scanner sc = new Scanner(System.in);
-		System.out.print("Enter the size of the vector: ");
+		System.out.print("Enter the vector size: ");
 		int size = sc.nextInt();
 		System.out.println();
 		//Creating vectors
