@@ -5,11 +5,13 @@ public class SortingAlgorithms {
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Enter the size of the vector: ");
 		int size = sc.nextInt();
+		System.out.println();
+		//Creating vectors
 		int[] ordered = createVector("ord", size);
 		int[] disordered = createVector("disord", size);
 		int[] aleatory = createVector("aleatory", size);
-		Random gen = new Random();
-		String[] algorithms = {"mergesort", "heapsort", "quicksort", "bubblesort"};		
+		Random gen = new Random(); // Used in quicksort
+		String[] algorithms = {"mergesort", "heapsort", "quicksort", "insertionsort", "bubblesort"};		
 		//Results:	
 		for(String algorithm: algorithms) {		
 			int[] disorderedClone = disordered.clone();
@@ -38,19 +40,18 @@ public class SortingAlgorithms {
 			}				
 		}else if(sort.matches("heapsort")) {			
 			Heap.sort(vect);			
+		}else if(sort.matches("insertionsort")) {
+			Insertionsort.sort(vect);
 		}
 		long end = System.nanoTime();
 		double totalTime =(double)(end-start)/1000000;
 		if(stackOverflow){
-			//System.out.print("(StackOverflow)");
+			System.out.print("(StackOverflow)");
 		}
-		System.out.printf("%s: %.2fms\n", vectorType, totalTime);
-		if(vect.length > 20) {
-			//System.out.printf("[%d, %d, %d, ..., %d, %d, %d, ..., %d, %d, %d] %d\n",vect[0], vect[1], vect[2], 
-					//vect[vect.length/2+1], vect[vect.length/2+2], vect[vect.length/2+3],
-					//vect[vect.length-3], vect[vect.length-2], vect[vect.length-1], vect.length);
+		if(checkOrder(vect)) {
+			System.out.printf("%s: %.2fms\n", vectorType, totalTime);	
 		}else {
-			//System.out.println(Arrays.toString(vect));
+			System.out.println("Failed to order");
 		}
 	}
 	
@@ -67,6 +68,15 @@ public class SortingAlgorithms {
 			}		
 		}
 		return vect;		
+	}
+	
+	public static boolean checkOrder(int[] vect) {
+		for(int i=0; i<vect.length-1; i++) {
+			if(vect[i] > vect[i+1]) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	
@@ -186,6 +196,47 @@ public class SortingAlgorithms {
 				sort(vect, mid+1, end, gen);				
 			}
 		}
+	}
+	
+	
+	//insertionsort
+	public static class Insertionsort{
+		public static void sort(int[] vect) {			
+			for(int i=1; i<vect.length; i++) {
+				putInOrder(vect, i, 0, i-1);
+			}			
+		}
+		public static void putInOrder(int[] vect, int index, int start, int end) {
+			if(end-start > 0) {				
+				int mid = (end+start)/2;
+				if(vect[index] < vect[mid]) {
+					putInOrder(vect, index, start, mid-1);
+				}else {
+					putInOrder(vect, index, mid+1, end);
+				}
+			}else if(start+1 < index){
+				int pos = start;
+				if(vect[index] > vect[start]) {
+					pos++;
+				}
+				int saved = vect[pos];
+				vect[pos] = vect[index];
+				while(pos < index) {
+					pos++;
+					int nextSaved = vect[pos];
+					vect[pos] = saved;
+					saved = nextSaved;
+				}
+			}else if(start+1 == index && vect[index] < vect[start]) {
+				int num = vect[start];
+				vect[start] = vect[index];
+				vect[index] = num;
+			}
+				
+					
+				
+			}			
+		
 	}
 	
 		
