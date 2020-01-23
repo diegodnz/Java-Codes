@@ -6,8 +6,8 @@ import java.util.*;
  * Example:
  * vector = [12, 35, 3, 62, 5, 100, 76]
  * limitIndex = 4 (then the query will only consider [12, 35, 3, 62, 5])
- * target = 6
- * answer: True, 2 + 4 = 6
+ * target = 20
+ * answer: True, 12 + 3 + 5 = 20
  * 
  * @problem: https://www.geeksforgeeks.org/subset-sum-problem-dp-25/
  * @author Alisson Diego D.
